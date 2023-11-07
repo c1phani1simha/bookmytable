@@ -1,0 +1,78 @@
+{% extends '../base.html' %}
+
+{% block title  %}
+    home  
+{% endblock title  %}
+
+{% load static %}
+
+{% block style  %} 
+{% endblock style  %}
+
+{% block content %}
+<div class="container">
+     {% if reservations %}
+     {% for reservation in reservations %}
+     <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg mt-5" style="width: 900px;">
+
+          <div class="card-body">
+          <div class="time d-flex flex-row align-items-center justify-content-between mt-1">
+              <h5 class="card-title">{{ reservation.restaurant.name }}</h5>
+              <div class="d-flex align-items-center"> </div>
+              <div> <button type="button" class="btn btn-info">  at : {{ reservation.date }} | {{ reservation.time }}</button> </div>
+            </div>
+             <p >
+              booked at : {{ reservation.booked_date }}
+            </p>
+             <p >
+              for  {{ reservation.no_of_people }}  people 
+            </p>
+            <div class="time d-flex flex-row align-items-center justify-content-between mt-1">
+             <p >
+              status :
+              {% if  reservation.status %}
+               <a class="badge badge-success">Confirmed</a>
+              {% else %}
+              <a  class="badge badge-warning">Pending</a> 
+              {% endif %}
+            </p>
+              <div class="d-flex align-items-center"> </div>
+              {% if reservation.is_active %}
+              <div>
+              <div style="display: inline-block;" >
+              <form action="/reservation_edit/{{ reservation.id }}" method="">
+              <button type="submit"  class="btn btn-primary mx-2">Edit</button> 
+              </form>
+             </div>
+             <div style="display: inline-block;" >
+              <form action="/reservation_delete/{{ reservation.id }}">
+               {% csrf_token %}
+              <button type="submit" class="btn btn-danger mx-2">Delete</button> 
+              </form>
+             </div>
+              {% endif %}
+              <div>
+            </div>
+             </div>
+          </div>
+        </div>
+      </div>
+     {% endfor %}
+     {% else %}
+        <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg mt-5" style="width: 900px;">
+
+          <div class="card-body">
+          <div class="time d-flex flex-row align-items-center justify-content-between mt-1">
+          {% if is_active %}
+              <div class="card-title">There are No active Reservations currently  ! .. Start making reservation to see them here </div>
+              {% else %}
+              <div class="card-title">There are No active Reservations currently  ! .. Start making reservation to see them here </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+</div>
+{% endblock content %}

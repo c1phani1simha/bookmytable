@@ -1,0 +1,437 @@
+{% extends '../base.html' %} {% load static %} {% block title %} detail {% endblock title %} {% block style %}
+<link rel="stylesheet" href="{% static 'css/restaurant.css' %}" />
+{% endblock style %} {% block content %}
+
+<div class="container">
+  <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+    <div>
+      <button data-toggle="modal" data-target="#book" type="button"
+        class="btn btn-main btn-primary has-tooltip" data-placement="left" title="Menu">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+  </div>
+  <div class="modal fade" id="book" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Reservation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form action="/create_reservation/{{ res.id }}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+               <div class="mb-4">
+                    <input type="date" name="date" required min="2020-11-21" placeholder="Choose a reservation date" class="form-control py-4 px-4">
+                </div>
+                <div class="form-group">
+                        <select name="time" placeholder="Choode time" required class="form-control" value="{{ state }}">
+                            <option value="9:30">9:30 PM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00">12:00 NOON</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="13:30">1:30 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="14:30">2:30 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="15:30">3:30 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="16:30">4:30 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="17:30">5:30 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="18:30">6:30 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="19:30">7:30 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                            <option value="20:30">8:30 PM</option>
+                            <option value="21:00">9:00 PM</option>
+
+                          </select>
+                            </div>
+            </div>
+            <div class="form-group">
+              <input class="form-control" required type="number" placeholder="no of people" id="quantity" name="no_of_people" min="1" max="5">
+            </div>
+            <div class="form-group">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg btn-block login-btn"
+              >
+                Confirm
+              </button>
+            </div>
+             </form>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="menu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Menu</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img
+            src="{{ res.menu_img.url }}"
+            alt="related_img" style="height:400px;max-width:450px" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="review" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Rate This place</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form action="/create_review/{{ res.id }}" method="post">
+            {% csrf_token %}
+               <div class="form-group">
+                <span> Rating</span>
+                <select name="rating" placeholder="Rating" required class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group ma-3 pa-3 px-3">
+                       <textarea  required name="comment" class="form-control"  placeholder="description *" rows="3"></textarea>
+              </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">
+              Submit
+            </button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+  <div class="row container">
+    <div class="row justify-content-center align-items-center">
+      <div class="">
+        <div class="profile card shadow-lg mt-5">
+          <img src="{{ res.profile_img.url }}" class="card-img-top"
+            alt="restaurant_img" style="height:400px;width:900px" />
+          <div class="card-body">
+            <div class="time d-flex flex-row align-items-center justify-content-between mt-1">
+              <h5 class="card-title">{{ res.name }}</h5>
+              <div class="d-flex align-items-center"> </div>
+              <div> <button type="button" class="btn btn-info">{{ res.rating }}</button> </div>
+            </div>
+            <p class="card-text">
+              {{ res.city }} | {{ res.state }} | 
+              <a href="{{ res.location_url }}" target="_blank">
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                Get Direction
+              </a>
+              <div style="display: inline-block;">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              timings :
+            </div>
+            <div class="chip" style="display: inline-block;">
+              <i class="fa fa-expand" aria-hidden="true"></i>
+              {{ res.open_time }}
+            </div>
+            <div class="chip blue lighten-4" style="display: inline-block;">
+              <i class="fa fa-compress" aria-hidden="true"></i>
+              {{ res.close_time }}
+            </div>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 card shadow-lg mb-2" style="width: 900px;">
+        <ul class="nav nav-pills">
+          <li class="nav-item mx-5">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" href="#images">Images</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" href="#menu">Menu</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" href="#contactus">Cotact Us</a>
+          </li>
+          <li class="nav-item mx-5">
+            <a class="nav-link" href="#rating">Rating</a>
+          </li>
+          <li class="nav-item mx-4">
+            <a class="nav-link" href="#reviews">Reviews</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+      <div class="card shadow-lg" style="width: 900px;">
+        <a name="about"></a>
+        <div class="card-body">
+              <h5 class="card-title">About</h5>
+          <p class="card-text">{{ res.description }}</p>
+          <div class="container mb-5">
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <ul class="list-group">
+                  <li class="list-group-item"><i class="fa fa-cutlery mx-2 text-info" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Cuisine</h5>
+                    <div class="ml-4"><small>{{ about.cuisine }}</small></div>
+                  </li>
+                  <li class="list-group-item"><i class="fa fa-credit-card mx-2 text-primary" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Paymen methods</h5>
+                    <div class="ml-4"><small>{{ about.payment_methods }} </small></div>
+                  </li>
+
+                  <li class="list-group-item"><i class="fa fa-external-link mx-2 text-danger" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Website</h5>
+                    <div class="ml-4"><small><a href="{{ about.website }}"
+                          target="_blank">{{ about.website }}</a></small>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-6">
+                <ul class="list-group">
+                  <li class="list-group-item"><i class="fa fa-line-chart mx-2 text-success" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">BestSelling Items</h5>
+                    <div class="ml-4"><small>{{ about.best_selling_items}}</small></div>
+                  </li>
+                  <li class="list-group-item"><i class="fa fa-plus mx-2 text-danger" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Features</h5>
+                    <div class="ml-4"><small>{{ about.features }}</small></div>
+                  </li>
+                  <li class="list-group-item"><i class="fa fa-map-marker mx-2 text-danger" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Landmark</h5>
+                    <div class="ml-4"><small>{{ about.landmark }}</small></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg" style="width: 900px;">
+          <a name="images"></a>
+          <div class="card-body">
+              <h5 class="card-title">Related Images</h5>
+            <p class="card-text">
+            <div class="row">
+               {% for img in related_img %}
+              <img src="{{ img.image.url }}"
+                class="col-12 col-lg-2" alt="related_img" style="height:100px;max-width:200px" />
+                {% endfor %}
+            </div>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg" style="width: 900px;">
+          <a name="menu"></a>
+          <div class="card-body">
+            <h5 class="card-title">Menu</h5>
+            <p class="card-text">
+             {% if  not res.menu_img == 'False'%}
+              <img data-toggle="modal" data-target="#menu"
+                src="{{ res.menu_img.url }}"
+                class="col-12 col-lg-2" alt="related_img" style="height:100px;max-width:200px" />
+                {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg" style="width: 900px;">
+          <a name="contactus"></a>
+          <div class="card-body">
+            <h5 class="card-title">Contact Us</h5>
+            <p class="card-text">
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <ul class="list-group">
+                  <li class="list-group-item"><i class="fa fa-phone mx-2 text-info" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Call Us</h5>
+                    <div class="ml-4"><small>{{ res.contact_no }}</small></div>
+                  </li>
+                  <li class="list-group-item"><i class="fa fa-user mx-2 text-primary" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Manager</h5>
+                    <div class="ml-4"><small>{{ manager.username }}</small></div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-6">
+                <ul class="list-group">
+                  <li class="list-group-item"><i class="fa fa-envelope-o mx-2 text-success" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Contact Restaurant</h5>
+                    <div class="ml-4"><small><a href="mailto:{{ res.contact_email }}">{{ res.contact_email }}</a></small></div>
+                  </li>
+                  <li class="list-group-item"><i class="fa fa-envelope-o mx-2 text-danger" aria-hidden="true"></i>
+                    <h5 style="display: inline-block;" class="mb-1">Contact Manager</h5>
+                    <div class="ml-4"><small><a href="mailto:{{ manager.email }}">{{ manager.email }}</a></small>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center mt-2">
+        <div class="card shadow-lg" style="width: 900px;">
+          <a name="rating"></a>
+          <div class="card-body">
+            <h5 class="card-title">Rating</h5>
+            <p class="card-text">
+            <div class="container-fluid">
+              <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8 col-md-10 col-12 text-center">
+                  <div class="card-rating">
+                    <div class="row justify-content-left d-flex">
+                      <div class="col-md-4 d-flex flex-column">
+                        <div class="rating-box">
+                          <h1 class="pt-4">{{ res.rating }}</h1>
+                          <p class="">out of 5</p>
+                        </div>
+                        <div> 
+                        {% for i in s %}
+                        <span class="fa fa-star star-active mx-1"></span>
+                        {% endfor %}
+                        {% for i in n %}
+                          <span  class="fa fa-star star-inactive mx-1"></span> 
+                        {% endfor %}
+                          </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="rating-bar0 justify-content-center">
+                          <table class="text-left mx-auto">
+                            <tr>
+                              <td class="rating-label">Excellent</td>
+                              <td class="rating-bar">
+                                <div class="progress">
+                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ fivesper }}%" aria-valuenow="{{ res.ones }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </td>
+                              <td class="text-right">{{ fives }}</td>
+                            </tr>
+                            <tr>
+                              <td class="rating-label">Good</td>
+                              <td class="rating-bar">
+                                 <div class="progress">
+                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ foursper }}%" aria-valuenow="{{ res.ones }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </td>
+                              <td class="text-right">{{ fours }}</td>
+                            </tr>
+                            <tr>
+                              <td class="rating-label">Average</td>
+                              <td class="rating-bar">
+                                <div class="progress">
+                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ threesper }}%" aria-valuenow="{{ res.ones }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </td>
+                              <td class="text-right">{{ threes }}</td>
+                            </tr>
+                            <tr>
+                              <td class="rating-label">Poor</td>
+                              <td class="rating-bar">
+                                <div class="progress">
+                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ towssper }}%" aria-valuenow="{{ res.ones }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </td>
+                              <td class="text-right">{{ tows }}</td>
+                            </tr>
+                            <tr>
+                              <td class="rating-label">Terrible</td>
+                              <td class="rating-bar">
+                                 <div class="progress">
+                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: {{ onesper }}%" aria-valuenow="{{ res.ones }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </td>
+                              <td class="text-right">{{ ones }}</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center mt-2 mb-5">
+        <div class="card shadow-lg" style="width: 900px;">
+          <a name="reviews"></a>
+          <div class="card-body">
+          <div class="time d-flex flex-row align-items-center justify-content-between mt-1">
+              <h5 class="card-title">Reviews</h5>
+              <div class="d-flex align-items-center"> </div>
+              <div> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#review">Add Review</button> </div>
+            </div>
+            <p class="card-text">
+            {% for review in reviews %}
+            <div class="card review">
+              <div class="row d-flex">
+                <div class="d-flex flex-column">
+                  <h4 class="mt-2 mb-0 card-title">{{ review.user }}</h4>
+                  <div>
+                    <p class="text-left">
+                    <span class="text-muted">rating : {{ review.rating }}  <span class="fa fa-star star-active ml-1"></span> 
+                    </p>
+                  </div>
+                </div>
+                <div class="ml-auto">
+                  <p class="text-muted pt-5 pt-sm-3">{{ review.time_stamp }}</p>
+                </div>
+              </div>
+              <div class="row text-left">
+                <p class="content card-text">{{ review.comment }}</p>
+              </div>
+            </div>
+            {% endfor %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block script %} 
+{% comment %} for fab button  {% endcomment %}
+$(function() {
+$('.btn-group-fab').on('click', '.btn', function() {
+$('.btn-group-fab').toggleClass('active'); }); $('has-tooltip').tooltip(); });
+{% endblock script %}

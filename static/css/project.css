@@ -1,0 +1,49 @@
+.top-image{
+    /* padding: 20px ; */
+    background:
+    linear-gradient(
+      rgba(2, 0, 0, 0.5),
+      rgba(68, 3, 3, 0)
+    ),
+   url("https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7B3jlR5lEcUFsp5V_80oPDA9O8YwjA0V-cg&usqp=CAU&dpr=1&w=500");
+    background-attachment: fixed;
+    height: 500px;
+    width: 100%;
+ }
+
+ .top-image input[type="text"]{
+    margin-left: 35%;
+    border: 3px solid black;
+    /* margin-top: 0%; */
+    width: 25%; 
+    height: 10%;    
+ }
+
+
+ .image{
+    background: url('https://i.insider.com/594d4d1eb4db9b2c008b46fa?width=750&format=jpeg&auto=webp');
+    background-attachment: fixed; 
+    height: 80%;
+    width: 100%;
+ }
+
+ .image-content{
+   background:
+   linear-gradient(
+     rgba(0, 0, 0, 0.5),
+     rgba(0, 0, 0, 0.5)
+   );
+    width: 50%;
+    height: 100%;
+    color: rgb(245, 248, 245);
+ }
+
+ .Box{
+    display: inline-block;
+    margin-top: 40px;
+    margin-left: 15%;
+    padding-left: 10px;
+ }
+
+
+ 

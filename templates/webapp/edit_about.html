@@ -1,0 +1,57 @@
+{% extends '../base.html' %}
+
+{% block title  %}
+   edit details  
+{% endblock title  %}
+
+{% load static %}
+
+{% block style  %}
+    <link rel="stylesheet" href="">
+{% endblock style  %}
+{% block content %}
+    <div class="container justify-content-center align-items-center" style="margin-top:100px">
+        <div class="card shadow-lg container pa-4">
+        <div class="card-body">
+        <h3 class="card-title">Edit About</h3>
+        <h6 class="card-card-subtitle mb-5">Note : Enter multiple items seperated by commas </h6>
+           <form action="/edit_about/{{ id }}" method="post">
+            {% csrf_token %}
+            <div class="row register-form">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Cuisine</label>
+                        <input name="cuisine"  type="text" class="form-control" placeholder="Indian,chinese.." value="{{ res.cuisine }}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paymany methods </label>
+                        <input name="payment_methods"  type="text" class="form-control" placeholder="credit,UPI.." value="{{ res.payment_methods }}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Features </label>
+                        <input name="features"  type="text" class="form-control" placeholder="AC,parking.." value="{{ res.features }}" />
+                    </div>
+                </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Landmark</label>
+                    <input name="landmark" type="text" class="form-control" placeholder="Near Wonderla.." value="{{ res.landmark }}" />
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input name="website"  type="text" class="form-control" placeholder="http://www.hyderabad-restaurant.de/" value="{{ res.website }}" />
+                </div>
+                <div class="form-group">
+                    <label>Best selling Items</label>
+                    <input name="best_selling"  type="text" class="form-control" placeholder="Fried Chicken, Burger.." value="{{ res.best_selling_items }}" />
+                </div>
+                <div class="form-group">
+                <input type="submit" class="btn btn-warning btn-lg"  value="Save"/>
+                </div>
+            </div>
+        </div>
+          </form>
+          </div>
+        </div>
+    <div>
+{% endblock content %}
